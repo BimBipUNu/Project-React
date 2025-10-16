@@ -1,3 +1,28 @@
-.main{
-    background-color: #F9FAFB;
+.homepage {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
+.header,
+.relative {
+  position: relative;
+}
+
+img {
+  display: block;
+  width: 100%;
+}
+
+.navbar {
+  position: relative;
+  z-index: 50; /* đảm bảo navbar không bị banner đè */
+}
+
+.footer {
+  margin-top: auto;
 }
