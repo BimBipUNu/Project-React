@@ -1,9 +1,11 @@
-import Homepage from "./pages/homepage/Homepage";
+import Register from "./components/forms/Register";
+// import Homepage from "./pages/homepage/Homepage";
 
 function App() {
   return (
     <>
-      <Homepage />
+      {/* <Homepage /> */}
+      <Register />
     </>
   );
 }
