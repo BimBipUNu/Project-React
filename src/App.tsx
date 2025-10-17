@@ -1,11 +1,9 @@
-import Register from "./components/forms/Register";
-// import Homepage from "./pages/homepage/Homepage";
+import RouteConfig from "./RouteConfig";
 
 function App() {
   return (
     <>
-      {/* <Homepage /> */}
-      <Register />
+      <RouteConfig />
     </>
   );
 }
