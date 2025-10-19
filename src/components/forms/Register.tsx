@@ -77,12 +77,14 @@ export default function Register() {
     }
 
     setError(newErrors);
+    // Thay thế dòng 80-86 bằng:
     const newUser: User = {
-      id: -1,
-      fullName: "",
-      email: "",
-      password: "",
+      id: Date.now(), // Tạo ID tạm thời
+      fullName: fullName.trim(),
+      email: email.trim(),
+      password: password.trim(),
       role: "user",
+      phone: "",
     };
 
     if (!hasError) {
@@ -93,7 +95,7 @@ export default function Register() {
   };
   return (
     <div className="w-screen h-screen bg-[#f7f8fa] flex justify-center items-center font-sans">
-      <div className="bg-white w-[400px] rounded-[8px] shadow-md px-[32px] py-[36px] flex flex-col items-center">
+      <div className="bg-white w-[448px] rounded-[8px] shadow-md px-[32px] py-[36px] flex flex-col items-center">
         <h1 className="text-[20px] font-bold mb-[24px]">Đăng ký tài khoản</h1>
 
         <form className="w-full mb-[16px]">

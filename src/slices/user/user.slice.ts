@@ -17,6 +17,7 @@ export const addNewUser = createAsyncThunk(
       return result;
     } catch (error) {
       console.log("ERROR", error);
+      throw error;
     }
   }
 );
@@ -31,11 +32,13 @@ const userSlice = createSlice({
         console.log("Đang đăng ký...");
       })
       .addCase(addNewUser.fulfilled, (state, action) => {
-        console.log("Đăng ký thành công:", action.payload);
-        return { ...state, ...action.payload };
+        if (action.payload) {
+          console.log("Đăng ký thành công:", action.payload);
+          return { ...state, ...action.payload };
+        }
       })
-      .addCase(addNewUser.rejected, () => {
-        console.error("Lỗi đăng ký");
+      .addCase(addNewUser.rejected, (state, action) => {
+        console.error("Lỗi đăng ký:", action.error);
       });
   },
 });
