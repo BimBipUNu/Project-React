@@ -3,6 +3,7 @@ import Homepage from "./pages/homepage/Homepage";
 import Register from "./components/forms/Register";
 import Login from "./components/forms/Login";
 import Admin from "./pages/admin/admin";
+import ProtectedAdmin from "./pages/admin/ProtectedAdmin";
 
 export default function RouteConfig() {
   return (
@@ -11,7 +12,14 @@ export default function RouteConfig() {
       <Route path="*" element={<Homepage />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/admin" element={<Admin />} />
+      <Route
+        path="/admin"
+        element={
+          <ProtectedAdmin>
+            <Admin />
+          </ProtectedAdmin>
+        }
+      />
     </Routes>
   );
 }
