@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import "./navbar.scss";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../slices";
 
 export default function Navbar() {
+  const userStore = useSelector((store: RootState) => store.user);
   return (
     <div>
       {/* Nav bar */}
@@ -18,8 +21,11 @@ export default function Navbar() {
             <Link className="item text-white" to="/">
               Lịch tập
             </Link>
-            <Link className="item text-white" to="/">
-              Đăng nhập
+            <Link
+              className="item text-white"
+              to={userStore.isLogin ? "/" : "/login"}
+            >
+              {userStore.isLogin ? "USER DATA" : "Đăng nhập"}
             </Link>
           </div>
         </div>

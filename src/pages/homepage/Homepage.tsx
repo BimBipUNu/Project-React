@@ -9,8 +9,8 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../slices";
 
 export default function Homepage() {
-  const store = useSelector((store: RootState) => store.user);
-  console.log(store);
+  const userStore = useSelector((store: RootState) => store.user);
+  console.log("User store:", userStore);
 
   return (
     <div className="nav xl:w-auto md:w-[834px] w-[375px] flex flex-col">
@@ -27,7 +27,9 @@ export default function Homepage() {
             />
             <div className="xl:w-[576px] md:w-[576px] w-[375px] h-[156px] absolute top-[295px] xl:left-[425px] md:left-[112px] left-0 flex flex-col justify-center text-center">
               <p className="font-bold text-[50px] text-white">
-                Welcome to Our Gym
+                {userStore.isLogin
+                  ? `Welcome back, ${userStore.data.fullName}!`
+                  : "Welcome to Our Gym"}
               </p>
               <p className="text-white text-[30px]">
                 Transform Your Body, Transform Your Life

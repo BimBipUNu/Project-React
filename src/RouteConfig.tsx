@@ -23,4 +23,3 @@ export default function RouteConfig() {
     </Routes>
   );
 }
-// Cần thêm logic bảo vệ Route Admin
