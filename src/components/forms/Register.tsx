@@ -77,9 +77,8 @@ export default function Register() {
     }
 
     setError(newErrors);
-    // Thay thế dòng 80-86 bằng:
     const newUser: User = {
-      id: Date.now(), // Tạo ID tạm thời
+      id: Date.now(),
       fullName: fullName.trim(),
       email: email.trim(),
       password: password.trim(),
@@ -88,7 +87,7 @@ export default function Register() {
     };
 
     if (!hasError) {
-      dispatch(addNewUser(newUser));
+      await dispatch(addNewUser(newUser));
 
       navigate("/");
     }

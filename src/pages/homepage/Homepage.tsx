@@ -5,8 +5,13 @@ import gym from "../../assets/gym.png";
 import yoga from "../../assets/yoga.png";
 import zumba from "../../assets/zumba.png";
 import Footer from "../../components/common/footer/Footer";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../slices";
 
 export default function Homepage() {
+  const store = useSelector((store: RootState) => store.user);
+  console.log(store);
+
   return (
     <div className="nav xl:w-auto md:w-[834px] w-[375px] flex flex-col">
       {/* header */}

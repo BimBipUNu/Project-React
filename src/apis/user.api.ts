@@ -14,7 +14,20 @@ async function addNewUser(data: User) {
   }
 }
 
+async function getAllUser() {
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_LOCALHOST_API}/users`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+}
+
 const userApi = {
+  GET: getAllUser,
   POST: addNewUser,
 };
 
