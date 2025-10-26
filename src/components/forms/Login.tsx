@@ -126,7 +126,7 @@ export default function Login() {
         {/* Đăng ký */}
         <p className="text-[14px] text-gray-600 mt-[16px]">
           Chưa có tài khoản?{" "}
-          <Link className="text-blue-500" to="/login">
+          <Link className="text-blue-500" to="/register">
             Đăng ký ngay
           </Link>
         </p>
