@@ -27,9 +27,6 @@ export default function Dashboard() {
   useEffect(() => {
     dispatch(fetchBooking());
   }, [dispatch]);
-  useEffect(() => {
-    dispatch(fetchBooking());
-  }, [dispatch]);
 
   const handleFilterChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -39,29 +36,32 @@ export default function Dashboard() {
 
   //Table
   const dataTable = bookingStore.data;
-  //  [
-  //   {
-  //     classType: "Yoga",
-  //     date: "2025-04-25",
-  //     time: "09:00 - 11:00",
-  //     name: "Admin",
-  //     email: "admin@gmail.com",
-  //   },
-  //   {
-  //     classType: "Zumba",
-  //     date: "2025-04-24",
-  //     time: "14:00 - 16:00",
-  //     name: "NGUYỄN THANH BÌNH PHƯỚC",
-  //     email: "tieccamrieu@gmail.com",
-  //   },
-  // ];
 
-  // Fake data thống kê
+  // Data thống kê
   const stats = {
-    gym: 1,
-    yoga: 3,
-    zumba: 2,
+    gym: dataTable.filter((booking) => booking.course?.type == "Gym").length,
+    yoga: dataTable.filter((booking) => booking.course?.type == "Yoga").length,
+    zumba: dataTable.filter((booking) => booking.course?.type == "Zumba")
+      .length,
   };
+
+  // Lọc dữ liệu theo bộ lọc
+  const filteredData = dataTable.filter((booking) => {
+    // Lọc theo lớp học
+    const matchClassType =
+      filter.classType === "Tất cả" ||
+      booking.course?.type === filter.classType;
+
+    // Lọc theo email (không phân biệt hoa thường)
+    const matchEmail =
+      filter.email === "" ||
+      booking.user?.email.toLowerCase().includes(filter.email.toLowerCase());
+
+    // Lọc theo ngày
+    const matchDate = filter.date === "" || booking.bookingDate === filter.date;
+
+    return matchClassType && matchEmail && matchDate;
+  });
 
   const data = {
     labels: ["Gym", "Yoga", "Zumba"],
@@ -226,14 +226,14 @@ export default function Dashboard() {
               </tr>
             </thead>
             <tbody>
-              {dataTable.length === 0 ? (
+              {filteredData.length === 0 ? (
                 <tr>
                   <td className="p-4 text-center text-gray-500" colSpan={6}>
                     Không có dữ liệu
                   </td>
                 </tr>
               ) : (
-                dataTable.map((row, i) => (
+                filteredData.map((row, i) => (
                   <tr key={i} className="border-b hover:bg-gray-50">
                     <td className="p-3">{row.course?.type}</td>
                     <td className="p-3">{row.bookingDate}</td>
