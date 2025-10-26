@@ -1,5 +1,5 @@
 export interface User {
-  id: number | string; // Mã định danh người dùng
+  id: number; // Mã định danh người dùng
   email: string; // Địa chỉ email đăng nhập
   password: string; // Mật khẩu
   fullName: string; // Họ và tên người dùng

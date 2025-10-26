@@ -66,7 +66,7 @@
   "bookings": [
     {
       "id": "501",
-      "userId": 2,
+      "userId": 1,
       "courseId": 101,
       "bookingDate": "2025-10-01",
       "bookingTime": "09:00",

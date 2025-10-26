@@ -65,26 +65,26 @@ export const restoreSession = createAsyncThunk(
   "user/restoreSession",
   async () => {
     try {
-      const token = localStorage.getItem('token');
-      
+      const token = localStorage.getItem("token");
+
       if (!token) {
-        throw new Error('No token found');
+        throw new Error("No token found");
       }
 
       // Check if token is expired
-      const { isTokenExpired } = await import('../../utils/jwt.utils');
+      const { isTokenExpired } = await import("../../utils/jwt.utils");
       if (isTokenExpired(token)) {
-        localStorage.removeItem('token');
-        throw new Error('Token expired');
+        localStorage.removeItem("token");
+        throw new Error("Token expired");
       }
 
       // Verify token
-      const { verifyToken } = await import('../../utils/jwt.utils');
+      const { verifyToken } = await import("../../utils/jwt.utils");
       const payload = await verifyToken(token);
-      
+
       if (!payload) {
-        localStorage.removeItem('token');
-        throw new Error('Invalid token');
+        localStorage.removeItem("token");
+        throw new Error("Invalid token");
       }
 
       // Get user data from API
@@ -94,8 +94,8 @@ export const restoreSession = createAsyncThunk(
       );
 
       if (!userSelected) {
-        localStorage.removeItem('token');
-        throw new Error('User not found');
+        localStorage.removeItem("token");
+        throw new Error("User not found");
       }
 
       // Return user data with token
@@ -104,7 +104,7 @@ export const restoreSession = createAsyncThunk(
         token,
       };
     } catch (error) {
-      console.log('Session restore failed:', error);
+      console.log("Session restore failed:", error);
       throw error;
     }
   }
@@ -117,8 +117,8 @@ const userSlice = createSlice({
     logout: (state) => {
       state.data = initialState.data;
       state.isLogin = false;
-      localStorage.removeItem('token');
-      console.log('✅ User logged out');
+      localStorage.removeItem("token");
+      console.log("User logged out");
     },
   },
   extraReducers: (builder) => {
@@ -146,11 +146,11 @@ const userSlice = createSlice({
         if (action.payload) {
           state.data = action.payload;
           state.isLogin = true;
-          
+
           // Lưu token vào localStorage
           if (action.payload.token) {
-            localStorage.setItem('token', action.payload.token);
-            console.log('✅ JWT Token generated:', action.payload.token);
+            localStorage.setItem("token", action.payload.token);
+            console.log("JWT Token generated:", action.payload.token);
           }
         }
         state.isLoading = false;
@@ -168,12 +168,12 @@ const userSlice = createSlice({
         if (action.payload) {
           state.data = action.payload;
           state.isLogin = true;
-          console.log('✅ Session restored from token');
+          console.log("Session restored from token");
         }
         state.isLoading = false;
       })
       .addCase(restoreSession.rejected, (state) => {
-        console.log('ℹ️ No valid session found');
+        console.log("No valid session found");
         state.isLoading = false;
       });
   },

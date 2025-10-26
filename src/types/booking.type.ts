@@ -1,3 +1,6 @@
+import type { Course } from "./course.type";
+import type { User } from "./user.type";
+
 export interface Booking {
   id: number; // Mã định danh booking
   userId: number; // ID người dùng (ví dụ: Nguyễn Văn A)
@@ -5,4 +8,9 @@ export interface Booking {
   bookingDate: string; // Ngày đặt lịch (định dạng: YYYY-MM-DD)
   bookingTime: string; // Giờ đặt lịch (định dạng: HH:mm)
   status: "confirmed" | "pending" | "cancelled"; // Trạng thái booking
+}
+
+export interface BookingDetail extends Booking {
+  user?: User;
+  course?: Course;
 }
