@@ -1,10 +1,17 @@
 import { Link } from "react-router-dom";
 import "./navbar.scss";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../../slices";
+import { userAction } from "../../../slices/user/user.slice";
 
 export default function Navbar() {
   const userStore = useSelector((store: RootState) => store.user);
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(userAction.logout());
+  };
+
   return (
     <div>
       {/* Nav bar */}
@@ -14,19 +21,37 @@ export default function Navbar() {
             <span className="text-[24px] text-white font-bold">GYM </span>
             <span className="text-[24px] text-white font-bold">MANAGEMENT</span>
           </div>
-          <div className="tool">
-            <Link className="item text-white" to="/">
+          <div className="tool flex items-center">
+            <Link className="item text-white text-[16px]" to="/">
               Trang chủ
             </Link>
-            <Link className="item text-white" to="/">
+            <Link className="item text-white text-[16px]" to="/">
               Lịch tập
             </Link>
-            <Link
-              className="item text-white"
-              to={userStore.isLogin ? "/" : "/login"}
-            >
-              {userStore.isLogin ? "USER DATA" : "Đăng nhập"}
-            </Link>
+            
+            {userStore.isLogin && userStore.data.role === "admin" && (
+              <Link className="item text-white text-[16px]" to="/admin">
+                Quản lý
+              </Link>
+            )}
+
+            {userStore.isLogin ? (
+              <>
+                <span className="item text-white text-[16px]">
+                  Xin chào, {userStore.data.fullName.toUpperCase()}
+                </span>
+                <button 
+                  onClick={handleLogout}
+                  className="item text-white text-[16px] cursor-pointer hover:text-blue-300 transition"
+                >
+                  Đăng xuất
+                </button>
+              </>
+            ) : (
+              <Link className="item text-white text-[16px]" to="/login">
+                Đăng nhập
+              </Link>
+            )}
           </div>
         </div>
       </div>

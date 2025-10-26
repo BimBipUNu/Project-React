@@ -52,8 +52,18 @@ export default function Login() {
     if (!hasError) {
       try {
         const result = await dispatch(loginFlow({ email, password })).unwrap();
+
+        // Log JWT token để demo
+        console.log("User logged in:", result.fullName);
+        console.log("JWT Token:", result.token);
+        console.log("User data:", {
+          id: result.id,
+          role: result.role,
+          email: result.email,
+        });
+
         if (result.role === "admin") {
-          navigate("/admin");
+          navigate("/");
         } else {
           navigate("/");
         }
