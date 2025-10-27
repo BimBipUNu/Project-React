@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Api from "../../apis";
-import type { BookingDetail } from "../../types/booking.type";
+import type { Booking, BookingDetail } from "../../types/booking.type";
 
 /*
   data: {  BOOKING
@@ -27,6 +27,20 @@ export const fetchBooking = createAsyncThunk(
     return res as BookingDetail[];
   }
 );
+export const deleteBooking = createAsyncThunk(
+  "booking/delete",
+  async (data: Booking) => {
+    const res = await Api.booking.DELETE(data);
+    return res;
+  }
+);
+export const updateBooking = createAsyncThunk(
+  "booking/update",
+  async (data: Booking) => {
+    const res = await Api.booking.PUT(data);
+    return res;
+  }
+);
 
 const bookingSlice = createSlice({
   name: "booking",
@@ -41,6 +55,36 @@ const bookingSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(fetchBooking.rejected, (state) => {
+      state.isLoading = false;
+    });
+
+    //Delete
+    builder.addCase(deleteBooking.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(deleteBooking.fulfilled, (state, action) => {
+      state.data = state.data.filter((booking) => booking.id != action.payload);
+      state.isLoading = false;
+    });
+    builder.addCase(deleteBooking.rejected, (state) => {
+      state.isLoading = false;
+    });
+
+    //Update
+    builder.addCase(updateBooking.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(updateBooking.fulfilled, (state, action) => {
+      const index = state.data.findIndex(
+        (booking) => booking.id === action.payload.id
+      );
+      if (index !== -1) {
+        // Lấy lại đầy đủ thông tin user và course
+        state.data[index] = action.payload;
+      }
+      state.isLoading = false;
+    });
+    builder.addCase(updateBooking.rejected, (state) => {
       state.isLoading = false;
     });
   },

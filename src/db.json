@@ -55,7 +55,7 @@
       "phone": "0987654321"
     },
     {
-      "id": 1760902842383,
+      "id": "1760902842383",
       "fullName": "Trần Võ Hữu Tài",
       "email": "trantai180506@gmail.com",
       "password": "taitaitai",
@@ -66,11 +66,27 @@
   "bookings": [
     {
       "id": "501",
-      "userId": 1,
-      "courseId": 101,
-      "bookingDate": "2025-10-01",
+      "userId": "1760902842383",
+      "courseId": "101",
+      "bookingDate": "2025-10-28",
       "bookingTime": "09:00",
-      "status": "confirmed"
+      "status": "cancelled",
+      "user": {
+        "id": "1760902842383",
+        "fullName": "Trần Võ Hữu Tài",
+        "email": "trantai180506@gmail.com",
+        "password": "taitaitai",
+        "role": "user",
+        "phone": ""
+      },
+      "course": {
+        "id": "101",
+        "name": "Yoga Giảm Cân",
+        "type": "Yoga",
+        "description": "Thư giãn và đốt calo hiệu quả.",
+        "price": 150000,
+        "imageUrl": "/assets/yoga.jpg"
+      }
     },
     {
       "id": "502",

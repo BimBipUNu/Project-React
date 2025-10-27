@@ -2,8 +2,9 @@ import { Route, Routes } from "react-router-dom";
 import Homepage from "./pages/homepage/Homepage";
 import Register from "./components/forms/Register";
 import Login from "./components/forms/Login";
-import Admin from "./pages/admin/admin";
 import ProtectedAdmin from "./pages/admin/ProtectedAdmin";
+import Admin from "./pages/admin/Admin";
+import Booking from "./pages/admin/booking/Booking";
 
 export default function RouteConfig() {
   return (
@@ -19,7 +20,9 @@ export default function RouteConfig() {
             <Admin />
           </ProtectedAdmin>
         }
-      />
+      >
+        <Route path="booking" element={<Booking />} />
+      </Route>
     </Routes>
   );
 }

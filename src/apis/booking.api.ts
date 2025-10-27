@@ -43,9 +43,35 @@ export async function getAllBooking() {
   }
 }
 
+export async function deleteBooking(data: Booking) {
+  try {
+    await axios.delete(
+      `${import.meta.env.VITE_LOCALHOST_API}/bookings/${data.id}`
+    );
+    return data.id;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function updateBooking(data: Booking) {
+  try {
+    const response = await axios.put(
+      `${import.meta.env.VITE_LOCALHOST_API}/bookings/${data.id}`,
+      data
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
 const bookingApi = {
   GET: getAllBooking,
   POST: addNewBooking,
+  DELETE: deleteBooking,
+  PUT: updateBooking,
 };
 
 export default bookingApi;
