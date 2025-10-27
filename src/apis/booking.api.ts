@@ -67,11 +67,62 @@ export async function updateBooking(data: Booking) {
   }
 }
 
+export interface BookingStatistics {
+  gym: number;
+  yoga: number;
+  zumba: number;
+  [key: string]: number;
+}
+
+export async function getBookingStatistics(): Promise<BookingStatistics> {
+  try {
+    // Gọi song song API để lấy bookings và courses
+    const [bookingsRes, coursesRes] = await Promise.all([
+      axios.get(`${import.meta.env.VITE_LOCALHOST_API}/bookings`),
+      axios.get(`${import.meta.env.VITE_LOCALHOST_API}/courses`),
+    ]);
+
+    const bookings = bookingsRes.data;
+    const courses = coursesRes.data;
+
+    // Nối course vào mỗi booking
+    const bookingsWithCourses = bookings.map((b: Booking) => ({
+      ...b,
+      course: courses.find((c: Course) => c.id == b.courseId),
+    }));
+
+    // Khởi tạo statistics với các loại class phổ biến
+    const statistics: BookingStatistics = {
+      gym: 0,
+      yoga: 0,
+      zumba: 0,
+    };
+
+    // Đếm số lượng booking theo từng loại class
+    bookingsWithCourses.forEach((booking: BookingDetail) => {
+      if (booking.course?.type) {
+        const type = booking.course.type.toLowerCase();
+        if (statistics[type] !== undefined) {
+          statistics[type]++;
+        } else {
+          statistics[type] = 1;
+        }
+      }
+    });
+
+    return statistics;
+  } catch (error) {
+    console.error("Error loading booking statistics:", error);
+    throw error;
+  }
+}
+
 const bookingApi = {
   GET: getAllBooking,
   POST: addNewBooking,
   DELETE: deleteBooking,
   PUT: updateBooking,
+  GET_STATISTICS: getBookingStatistics,
 };
 
 export default bookingApi;

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Api from "../../apis";
 import type { Booking, BookingDetail } from "../../types/booking.type";
+import type { BookingStatistics } from "../../apis/booking.api";
 
 /*
   data: {  BOOKING
@@ -15,9 +16,15 @@ import type { Booking, BookingDetail } from "../../types/booking.type";
 const initialState: {
   data: BookingDetail[];
   isLoading: boolean;
+  statistics: BookingStatistics;
 } = {
   data: [],
   isLoading: false,
+  statistics: {
+    gym: 0,
+    yoga: 0,
+    zumba: 0,
+  },
 };
 
 export const fetchBooking = createAsyncThunk(
@@ -39,6 +46,14 @@ export const updateBooking = createAsyncThunk(
   async (data: Booking) => {
     const res = await Api.booking.PUT(data);
     return res;
+  }
+);
+
+export const fetchBookingStatistics = createAsyncThunk(
+  "booking/fetchBookingStatistics",
+  async () => {
+    const res = await Api.booking.GET_STATISTICS();
+    return res as BookingStatistics;
   }
 );
 
@@ -85,6 +100,18 @@ const bookingSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(updateBooking.rejected, (state) => {
+      state.isLoading = false;
+    });
+
+    //Statistics
+    builder.addCase(fetchBookingStatistics.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchBookingStatistics.fulfilled, (state, action) => {
+      state.statistics = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(fetchBookingStatistics.rejected, (state) => {
       state.isLoading = false;
     });
   },
