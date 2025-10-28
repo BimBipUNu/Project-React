@@ -4,6 +4,7 @@ import "./main.css";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./slices/index.ts";
+import "@ant-design/v5-patch-for-react-19";
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>

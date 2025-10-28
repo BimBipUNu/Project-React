@@ -25,10 +25,35 @@ async function getAllUser() {
     throw error;
   }
 }
+async function updateUser(data: User) {
+  try {
+    const response = await axios.put(
+      `${import.meta.env.VITE_LOCALHOST_API}/users/${data.id}`,
+      data
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+export async function deleteUser(data: User) {
+  try {
+    await axios.delete(
+      `${import.meta.env.VITE_LOCALHOST_API}/users/${data.id}`
+    );
+    return data.id;
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 const userApi = {
   GET: getAllUser,
   POST: addNewUser,
+  PUT: updateUser,
+  DELETE: deleteUser,
 };
 
 export default userApi;

@@ -16,7 +16,7 @@ import type { BookingStatistics } from "../../apis/booking.api";
 const initialState: {
   data: BookingDetail[];
   isLoading: boolean;
-  statistics: BookingStatistics;
+  statistics: BookingStatistics; // tính toán số loại lớp học
 } = {
   data: [],
   isLoading: false,

@@ -25,14 +25,24 @@ export default function Navbar() {
             Quản lý lịch
           </NavLink>
           <NavLink
-            to="course"
+            to="user"
             className={({ isActive }) =>
               isActive
-                ? "bg-blue-600 text-white rounded-lg px-3 py-2 text-sm font-medium"
+                ? "bg-gray-600 text-white rounded-lg px-3 py-2 text-sm font-medium"
                 : "text-gray-300 hover:text-white hover:bg-gray-700 rounded-lg px-3 py-2 text-sm font-medium transition-colors"
             }
           >
-            Quản lý dịch vụ
+            Quản lý người dùng
+          </NavLink>
+          <NavLink
+            to="course"
+            className={({ isActive }) =>
+              isActive
+                ? "bg-gray-600 text-white rounded-lg px-3 py-2 text-sm font-medium"
+                : "text-gray-300 hover:text-white hover:bg-gray-700 rounded-lg px-3 py-2 text-sm font-medium transition-colors"
+            }
+          >
+            Quản lý lớp học
           </NavLink>
           <NavLink
             to="/"

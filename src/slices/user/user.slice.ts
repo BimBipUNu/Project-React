@@ -1,3 +1,4 @@
+//Slice user với state là user hiện tại đang đăng nhập
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { User } from "../../types/user.type";
 import Api from "../../apis";
@@ -90,7 +91,7 @@ export const restoreSession = createAsyncThunk(
       // Get user data from API
       const res: User[] = await Api.user.GET();
       const userSelected: User | undefined = res.find(
-        (user) => user.id.toString() === payload.id.toString()
+        (user) => user.id === payload.id
       );
 
       if (!userSelected) {
@@ -127,11 +128,11 @@ const userSlice = createSlice({
       .addCase(addNewUser.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(addNewUser.fulfilled, (state, action) => {
+      .addCase(addNewUser.fulfilled, (state) => {
         state.isLoading = false;
-        if (action.payload) {
-          state.data = action.payload;
-        }
+        // if (action.payload) {
+        //   state.data = action.payload;
+        // }
       })
       .addCase(addNewUser.rejected, (state, action) => {
         console.error("Lỗi đăng ký:", action.error);

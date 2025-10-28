@@ -32,8 +32,8 @@ export async function getAllBooking() {
     // Nối thêm user + course vào mỗi booking
     const merged: BookingDetail[] = bookings.map((b: Booking) => ({
       ...b,
-      user: users.find((u: User) => u.id == b.userId), // Dùng == nếu không, cần stringtify lại dữ liệu, đang so khớp 1 == "1" => true
-      course: courses.find((c: Course) => c.id == b.courseId),
+      user: b.userId ? users.find((u: User) => u.id === b.userId) : undefined,
+      course: courses.find((c: Course) => c.id === b.courseId),
     }));
 
     return merged;
@@ -46,7 +46,7 @@ export async function getAllBooking() {
 export async function deleteBooking(data: Booking) {
   try {
     await axios.delete(
-      `${import.meta.env.VITE_LOCALHOST_API}/bookings/${data.id}`
+      `${import.meta.env.VITE_LOCALHOST_API}/bookings/${Number(data.id)}`
     );
     return data.id;
   } catch (err) {
@@ -56,9 +56,18 @@ export async function deleteBooking(data: Booking) {
 
 export async function updateBooking(data: Booking) {
   try {
+    const bookingData = {
+      id: data.id,
+      userId: data.userId,
+      courseId: data.courseId,
+      bookingDate: data.bookingDate,
+      bookingTime: data.bookingTime,
+      status: data.status,
+    };
+
     const response = await axios.put(
-      `${import.meta.env.VITE_LOCALHOST_API}/bookings/${data.id}`,
-      data
+      `${import.meta.env.VITE_LOCALHOST_API}/bookings/${Number(data.id)}`,
+      bookingData
     );
     return response.data;
   } catch (err) {
@@ -88,10 +97,10 @@ export async function getBookingStatistics(): Promise<BookingStatistics> {
     // Nối course vào mỗi booking
     const bookingsWithCourses = bookings.map((b: Booking) => ({
       ...b,
-      course: courses.find((c: Course) => c.id == b.courseId),
+      course: courses.find((c: Course) => c.id === b.courseId),
     }));
 
-    // Khởi tạo statistics với các loại class phổ biến
+    // Khởi tạo statistics với các loại lớp học phổ biến
     const statistics: BookingStatistics = {
       gym: 0,
       yoga: 0,

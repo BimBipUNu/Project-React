@@ -96,7 +96,7 @@ export default function Booking() {
       const values = await form.validateFields();
       if (editingBooking) {
         const updatedBooking = {
-          ...editingBooking,
+          id: editingBooking.id,
           userId: values.userId,
           courseId: values.courseId,
           bookingDate: values.bookingDate,
@@ -140,7 +140,7 @@ export default function Booking() {
     // Lọc theo email (không phân biệt hoa thường)
     const matchEmail =
       filter.email === "" ||
-      booking.user?.email.toLowerCase().includes(filter.email.toLowerCase());
+      booking.user?.email?.toLowerCase().includes(filter.email.toLowerCase());
 
     // Lọc theo ngày
     const matchDate = filter.date === "" || booking.bookingDate === filter.date;

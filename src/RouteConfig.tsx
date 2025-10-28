@@ -5,6 +5,7 @@ import Login from "./components/forms/Login";
 import ProtectedAdmin from "./pages/admin/ProtectedAdmin";
 import Admin from "./pages/admin/Admin";
 import Booking from "./pages/admin/booking/Booking";
+import User from "./pages/admin/user/User";
 
 export default function RouteConfig() {
   return (
@@ -22,6 +23,7 @@ export default function RouteConfig() {
         }
       >
         <Route path="booking" element={<Booking />} />
+        <Route path="user" element={<User />} />
       </Route>
     </Routes>
   );
