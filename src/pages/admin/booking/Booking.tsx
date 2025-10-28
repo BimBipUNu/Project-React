@@ -17,10 +17,11 @@ import {
   updateBooking,
 } from "../../../slices/booking/booking.slice";
 import { Form, Input, Modal, Popconfirm, Select } from "antd";
-import type { BookingDetail } from "../../../types/booking.type";
+import type { Booking, BookingDetail } from "../../../types/booking.type";
 import axios from "axios";
 import type { Course } from "../../../types/course.type";
 import type { User } from "../../../types/user.type";
+import Api from "../../../apis";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -117,6 +118,30 @@ export default function Booking() {
     setIsEditModalVisible(false);
     setEditingBooking(null);
     form.resetFields();
+  };
+
+  //ADD New Booking
+  const [isAdd, setIsAdd] = useState(false);
+  const handleAddBooking = async () => {
+    try {
+      const values = await form.validateFields();
+
+      const newBooking: Booking = {
+        id: Date.now(),
+        userId: values.userId,
+        courseId: values.courseId,
+        bookingDate: values.bookingDate,
+        bookingTime: values.bookingTime,
+        status: values.status,
+      };
+      await Api.booking.POST(newBooking);
+      dispatch(fetchBooking()); // Refresh danh sách
+      setIsEditModalVisible(false);
+      setIsAdd(false);
+      form.resetFields();
+    } catch (error) {
+      console.error("Error updating booking:", error);
+    }
   };
 
   //Table
@@ -268,6 +293,15 @@ export default function Booking() {
 
         {/* Bảng dữ liệu */}
         <section className="bg-white rounded-lg shadow-sm p-4">
+          <button
+            className="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-sm transition"
+            onClick={() => {
+              setIsAdd(true);
+              setIsEditModalVisible(true);
+            }}
+          >
+            Thêm Lịch tập mới
+          </button>
           <table className="w-full border-collapse text-sm">
             <thead>
               <tr className="bg-gray-100 text-left text-gray-700">
@@ -314,7 +348,10 @@ export default function Booking() {
                     </td>
                     <td className="p-3 text-center space-x-2">
                       <button
-                        onClick={() => handleEdit(row)}
+                        onClick={() => {
+                          setIsAdd(false);
+                          handleEdit(row);
+                        }}
                         className="text-blue-600 hover:underline text-sm"
                       >
                         Sửa
@@ -343,11 +380,11 @@ export default function Booking() {
 
         {/* Modal sửa lịch */}
         <Modal
-          title="Sửa lịch tập"
+          title={isAdd ? "Thêm mới lịch tập" : "Sửa lịch tập"}
           open={isEditModalVisible}
-          onOk={handleSaveEdit}
+          onOk={isAdd ? handleAddBooking : handleSaveEdit}
           onCancel={handleCancelEdit}
-          okText="Lưu"
+          okText={isAdd ? "Thêm mới" : "Lưu"}
           cancelText="Hủy"
         >
           <Form form={form} layout="vertical">

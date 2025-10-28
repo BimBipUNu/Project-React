@@ -96,13 +96,6 @@ export default function User() {
     }
   };
 
-  // const handleOpenAddModal = () => {
-  //   setIsAdd(true);
-  //   setEditingUser(null);
-  //   form.resetFields(); // ✅ Reset form trước khi mở modal Add
-  //   setIsModalVisible(true);
-  // };
-
   return (
     <div className="w-full min-h-screen bg-gray-100 px-8 py-6 text-gray-800">
       {/* Header */}
