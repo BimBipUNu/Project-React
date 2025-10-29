@@ -49,11 +49,11 @@ export async function deleteCourse(data: Course) {
   }
 }
 
-const userApi = {
+const courseApi = {
   GET: getAllCourse,
   POST: addNewCourse,
   PUT: updateCourse,
   DELETE: deleteCourse,
 };
 
-export default userApi;
+export default courseApi;

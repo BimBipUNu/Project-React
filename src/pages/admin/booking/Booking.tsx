@@ -135,7 +135,7 @@ export default function Booking() {
         status: values.status,
       };
       await Api.booking.POST(newBooking);
-      dispatch(fetchBooking()); // Refresh danh sách
+      await dispatch(fetchBooking()); // Refresh danh sách
       setIsEditModalVisible(false);
       setIsAdd(false);
       form.resetFields();

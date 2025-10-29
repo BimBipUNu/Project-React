@@ -57,6 +57,19 @@ export const fetchBookingStatistics = createAsyncThunk(
   }
 );
 
+export const addNewBooking = createAsyncThunk(
+  "booking/addNewBooking",
+  async (data: Booking) => {
+    try {
+      const result = await Api.booking.POST(data);
+      return result;
+    } catch (error) {
+      console.log("ERROR", error);
+      throw error;
+    }
+  }
+);
+
 const bookingSlice = createSlice({
   name: "booking",
   initialState,
@@ -72,6 +85,19 @@ const bookingSlice = createSlice({
     builder.addCase(fetchBooking.rejected, (state) => {
       state.isLoading = false;
     });
+
+    //Add
+    builder
+      .addCase(addNewBooking.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addNewBooking.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(addNewBooking.rejected, (state, action) => {
+        console.error("Lỗi đăng ký:", action.error);
+        state.isLoading = false;
+      });
 
     //Delete
     builder.addCase(deleteBooking.pending, (state) => {

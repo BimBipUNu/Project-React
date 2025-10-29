@@ -66,9 +66,6 @@ const userManagementSlice = createSlice({
       })
       .addCase(addNewUserByAdmin.fulfilled, (state) => {
         state.isLoading = false;
-        // if (action.payload) {
-        //   state.data = action.payload;
-        // }
       })
       .addCase(addNewUserByAdmin.rejected, (state, action) => {
         console.error("Lỗi đăng ký:", action.error);

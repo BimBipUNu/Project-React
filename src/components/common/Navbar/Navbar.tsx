@@ -13,7 +13,7 @@ export default function Navbar() {
   };
 
   return (
-    <div>
+    <div className="nav-container">
       {/* Nav bar */}
       <div className="flex justify-center">
         <div className="main xl:w-[1280px] md:w-[768px] w-[342px] h-[52px] flex-nowrap flex justify-between items-center">
@@ -25,10 +25,10 @@ export default function Navbar() {
             <Link className="item text-white text-[16px]" to="/">
               Trang chủ
             </Link>
-            <Link className="item text-white text-[16px]" to="/">
+            <Link className="item text-white text-[16px]" to="/booking">
               Lịch tập
             </Link>
-            
+
             {userStore.isLogin && userStore.data.role === "admin" && (
               <Link className="item text-white text-[16px]" to="/admin">
                 Quản lý
@@ -40,7 +40,7 @@ export default function Navbar() {
                 <span className="item text-white text-[16px]">
                   Xin chào, {userStore.data.fullName.toUpperCase()}
                 </span>
-                <button 
+                <button
                   onClick={handleLogout}
                   className="item text-white text-[16px] cursor-pointer hover:text-blue-300 transition"
                 >

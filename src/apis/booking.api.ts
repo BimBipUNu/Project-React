@@ -7,7 +7,7 @@ async function addNewBooking(data: Booking) {
   try {
     const response = await axios.post(
       `${import.meta.env.VITE_LOCALHOST_API}/bookings`,
-      data
+      { ...data, id: String(Date.now()) } //parse Id về string lưu JSON
     );
     return response.data;
   } catch (error) {
@@ -46,7 +46,7 @@ export async function getAllBooking() {
 export async function deleteBooking(data: Booking) {
   try {
     await axios.delete(
-      `${import.meta.env.VITE_LOCALHOST_API}/bookings/${Number(data.id)}`
+      `${import.meta.env.VITE_LOCALHOST_API}/bookings/${data.id}`
     );
     return data.id;
   } catch (err) {
@@ -66,7 +66,7 @@ export async function updateBooking(data: Booking) {
     };
 
     const response = await axios.put(
-      `${import.meta.env.VITE_LOCALHOST_API}/bookings/${Number(data.id)}`,
+      `${import.meta.env.VITE_LOCALHOST_API}/bookings/${data.id}`,
       bookingData
     );
     return response.data;

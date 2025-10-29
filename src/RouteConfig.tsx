@@ -6,6 +6,7 @@ import ProtectedAdmin from "./pages/admin/ProtectedAdmin";
 import Admin from "./pages/admin/Admin";
 import Booking from "./pages/admin/booking/Booking";
 import User from "./pages/admin/user/User";
+import BookingByUser from "./pages/booking/BookingByUser";
 
 export default function RouteConfig() {
   return (
@@ -14,6 +15,7 @@ export default function RouteConfig() {
       <Route path="*" element={<Homepage />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/booking" element={<BookingByUser />} />
       <Route
         path="/admin"
         element={
