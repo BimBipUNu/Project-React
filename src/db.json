@@ -6,7 +6,7 @@
       "type": "Yoga",
       "description": "Thư giãn và đốt calo hiệu quả.",
       "price": "150000",
-      "imageUrl": "/assets/yoga.jpg"
+      "imageUrl": "https://res.cloudinary.com/dkzsbvp8p/image/upload/v1761786096/yoga_ozslon.png"
     },
     {
       "id": "102",
@@ -14,7 +14,15 @@
       "type": "Gym",
       "description": "Bài tập toàn thân cho người mới bắt đầu.",
       "price": "200000",
-      "imageUrl": "/assets/gym.jpg"
+      "imageUrl": "https://res.cloudinary.com/dkzsbvp8p/image/upload/v1761786096/gym_nks7fi.png"
+    },
+    {
+      "id": "1761787065939",
+      "name": "Test",
+      "type": "test",
+      "description": "testtt",
+      "price": "100",
+      "imageUrl": "https://res.cloudinary.com/dkzsbvp8p/image/upload/v1761787062/rj08k8kgzxotwqj0mnra.png"
     }
   ],
   "users": [

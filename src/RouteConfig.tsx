@@ -7,6 +7,7 @@ import Admin from "./pages/admin/Admin";
 import Booking from "./pages/admin/booking/Booking";
 import User from "./pages/admin/user/User";
 import BookingByUser from "./pages/booking/BookingByUser";
+import Course from "./pages/admin/course/Course";
 
 export default function RouteConfig() {
   return (
@@ -26,6 +27,7 @@ export default function RouteConfig() {
       >
         <Route path="booking" element={<Booking />} />
         <Route path="user" element={<User />} />
+        <Route path="course" element={<Course />} />
       </Route>
     </Routes>
   );
