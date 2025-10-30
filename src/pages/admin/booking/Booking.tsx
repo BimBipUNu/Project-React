@@ -18,10 +18,9 @@ import {
 } from "../../../slices/booking/booking.slice";
 import { Form, Input, Modal, Popconfirm, Select } from "antd";
 import type { Booking, BookingDetail } from "../../../types/booking.type";
-import axios from "axios";
-import type { Course } from "../../../types/course.type";
-import type { User } from "../../../types/user.type";
 import Api from "../../../apis";
+import { fetchCourse } from "../../../slices/course/course.slice";
+import { fetchUser } from "../../../slices/user/userManagement.slice";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -39,25 +38,14 @@ export default function Booking() {
     date: "",
   });
 
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [users, setUsers] = useState<User[]>([]);
+  const courses = useSelector((state: RootState) => state.course);
+  const users = useSelector((state: RootState) => state.userManagement);
   const [form] = Form.useForm();
 
   useEffect(() => {
     dispatch(fetchBooking());
-    const loadData = async () => {
-      try {
-        const [coursesRes, usersRes] = await Promise.all([
-          axios.get(`${import.meta.env.VITE_LOCALHOST_API}/courses`),
-          axios.get(`${import.meta.env.VITE_LOCALHOST_API}/users`),
-        ]);
-        setCourses(coursesRes.data);
-        setUsers(usersRes.data);
-      } catch (error) {
-        console.error("Error loading data:", error);
-      }
-    };
-    loadData();
+    dispatch(fetchCourse());
+    dispatch(fetchUser());
   }, [dispatch]);
 
   const handleFilterChange = (
@@ -148,12 +136,15 @@ export default function Booking() {
   const dataTable = bookingStore.data;
 
   // Data thống kê
-  const stats = {
-    gym: dataTable.filter((booking) => booking.course?.type == "Gym").length,
-    yoga: dataTable.filter((booking) => booking.course?.type == "Yoga").length,
-    zumba: dataTable.filter((booking) => booking.course?.type == "Zumba")
-      .length,
-  };
+  const stats = courses.data.reduce((acc, course) => {
+    const type = course.type;
+    if (!acc[type]) {
+      acc[type] = dataTable.filter(
+        (booking) => booking.course?.type === type
+      ).length;
+    }
+    return acc;
+  }, {} as Record<string, number>);
 
   // Lọc dữ liệu theo bộ lọc
   const filteredData = dataTable.filter((booking) => {
@@ -174,11 +165,11 @@ export default function Booking() {
   });
 
   const data = {
-    labels: ["Gym", "Yoga", "Zumba"],
+    labels: Object.keys(stats),
     datasets: [
       {
         label: "Số lượng lịch đặt",
-        data: [stats.gym, stats.yoga, stats.zumba],
+        data: Object.values(stats),
         backgroundColor: [
           "rgba(54, 162, 235, 0.4)",
           "rgba(75, 192, 192, 0.4)",
@@ -214,20 +205,12 @@ export default function Booking() {
           <h2 className="text-xl font-semibold mb-4">Thống kê lịch tập</h2>
 
           <div className="grid grid-cols-3 gap-4 mb-6">
-            <div className="bg-white p-4 rounded-lg shadow-sm ">
-              <p className="text-sm text-gray-500">Tổng số lịch Gym</p>
-              <p className="text-3xl font-bold text-blue-600">{stats.gym}</p>
-            </div>
-            <div className="bg-white p-4 rounded-lg shadow-sm ">
-              <p className="text-sm text-gray-500">Tổng số lịch Yoga</p>
-              <p className="text-3xl font-bold text-green-600">{stats.yoga}</p>
-            </div>
-            <div className="bg-white p-4 rounded-lg shadow-sm ">
-              <p className="text-sm text-gray-500">Tổng số lịch Zumba</p>
-              <p className="text-3xl font-bold text-purple-600">
-                {stats.zumba}
-              </p>
-            </div>
+            {Object.entries(stats).map(([type, count]) => (
+              <div key={type} className="bg-white p-4 rounded-lg shadow-sm">
+                <p className="text-sm text-gray-500">Tổng số lịch {type}</p>
+                <p className="text-3xl font-bold">{count}</p>
+              </div>
+            ))}
           </div>
 
           {/* Biểu đồ */}
@@ -394,7 +377,7 @@ export default function Booking() {
               rules={[{ required: true, message: "Vui lòng chọn người dùng" }]}
             >
               <Select placeholder="Chọn người dùng">
-                {users.map((user) => (
+                {users.data.map((user) => (
                   <Select.Option key={user.id} value={user.id}>
                     {user.fullName} ({user.email})
                   </Select.Option>
@@ -408,7 +391,7 @@ export default function Booking() {
               rules={[{ required: true, message: "Vui lòng chọn khóa học" }]}
             >
               <Select placeholder="Chọn khóa học">
-                {courses.map((course) => (
+                {courses.data.map((course) => (
                   <Select.Option key={course.id} value={course.id}>
                     {course.name} ({course.type})
                   </Select.Option>

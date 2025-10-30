@@ -1,16 +1,22 @@
 import "./homepage.scss";
 import Navbar from "../../components/common/Navbar/Navbar";
 import banner from "../../assets/banner.png";
-import gym from "../../assets/gym.png";
-import yoga from "../../assets/yoga.png";
-import zumba from "../../assets/zumba.png";
 import Footer from "../../components/common/footer/Footer";
-import { useSelector } from "react-redux";
-import type { RootState } from "../../slices";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../slices";
+import { useEffect } from "react";
+import { fetchCourse } from "../../slices/course/course.slice";
+import { useNavigate } from "react-router-dom";
 
 export default function Homepage() {
   const userStore = useSelector((store: RootState) => store.user);
-  console.log("User store:", userStore);
+  const courseStore = useSelector((state: RootState) => state.course);
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(fetchCourse());
+  }, [dispatch]);
 
   return (
     <div className="nav xl:w-auto md:w-[834px] w-[375px] flex flex-col">
@@ -49,59 +55,36 @@ export default function Homepage() {
         </p>
 
         <div className="CardBox xl:w-[1248px] md:w-[736px] w-[343px] grid md:grid-cols-3 gap-8 mt-[48px] mb-[64px]">
-          {/* GYM */}
-          <div className="Card shadow-gray-200 shadow-xl rounded-xl overflow-hidden bg-white">
-            <img
-              className="w-full h-[192px] object-cover"
-              src={gym}
-              alt="imgGym"
-            />
-            <div className="p-[24px]">
-              <p className="font-bold text-[24px] mb-[8.5px]">Gym</p>
-              <p className="mb-[16px] text-[18px] text-gray-500">
-                Tập luyện với các thiết bị hiện đại
-              </p>
-              <button className="bg-blue-500 hover:bg-blue-600 text-white w-[100px] h-[40px] rounded-[8px]">
-                Đặt lịch
-              </button>
-            </div>
-          </div>
-
-          {/* YOGA */}
-          <div className="Card shadow-gray-200 shadow-xl rounded-xl overflow-hidden bg-white">
-            <img
-              className="w-full h-[192px] object-cover"
-              src={yoga}
-              alt="imgYoga"
-            />
-            <div className="p-[24px]">
-              <p className="font-bold text-[24px] mb-[8.5px]">Yoga</p>
-              <p className="mb-[16px] text-[18px] text-gray-500">
-                Thư giãn và cân bằng tâm trí
-              </p>
-              <button className="bg-blue-500 hover:bg-blue-600 text-white w-[100px] h-[40px] rounded-[8px]">
-                Đặt lịch
-              </button>
-            </div>
-          </div>
-
-          {/* ZUMBA */}
-          <div className="Card shadow-gray-200 shadow-xl rounded-xl overflow-hidden bg-white">
-            <img
-              className="w-full h-[192px] object-cover"
-              src={zumba}
-              alt="imgZumba"
-            />
-            <div className="p-[24px]">
-              <p className="font-bold text-[24px] mb-[8.5px]">Zumba</p>
-              <p className="mb-[16px] text-[18px] text-gray-500">
-                Đốt cháy calories với những điệu nhảy sôi động
-              </p>
-              <button className="bg-blue-500 hover:bg-blue-600 text-white w-[100px] h-[40px] rounded-[8px]">
-                Đặt lịch
-              </button>
-            </div>
-          </div>
+          {[...courseStore.data]
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((course, index) => (
+              <div
+                key={index}
+                className="Card shadow-gray-200 shadow-xl rounded-xl overflow-hidden bg-white"
+              >
+                <img
+                  className="w-full h-[192px] object-cover"
+                  src={course.imageUrl}
+                  alt="img"
+                />
+                <div className="p-[24px]">
+                  <p className="font-bold text-[24px] mb-[8.5px]">
+                    {course.name}
+                  </p>
+                  <p className="mb-[16px] text-[18px] text-gray-500">
+                    {course.description}
+                  </p>
+                  <button
+                    className="bg-blue-500 hover:bg-blue-600 text-white w-[100px] h-[40px] rounded-[8px]"
+                    onClick={() => {
+                      navigate("booking");
+                    }}
+                  >
+                    Đặt lịch
+                  </button>
+                </div>
+              </div>
+            ))}
         </div>
       </main>
 
