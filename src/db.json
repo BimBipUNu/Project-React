@@ -51,12 +51,12 @@
       "phone": "0938451729"
     },
     {
-      "id": "1761628394026",
-      "fullName": "Võ Hữu Tài",
+      "id": "1761913207591",
+      "fullName": "Trần Võ Hữu Tài",
       "email": "trantai180506@gmail.com",
-      "password": "taitaitaita",
+      "password": "taitaitai",
       "role": "user",
-      "phone": "0938451729"
+      "phone": ""
     }
   ],
   "bookings": [
@@ -83,6 +83,14 @@
       "bookingDate": "2025-10-30",
       "bookingTime": "09:40",
       "status": "pending"
+    },
+    {
+      "id": "1761913240301",
+      "userId": "1761913207591",
+      "courseId": "101",
+      "bookingDate": "2025-11-01",
+      "bookingTime": "16:20",
+      "status": "confirmed"
     }
   ]
 }

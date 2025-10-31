@@ -89,7 +89,7 @@ export default function Register() {
     if (!hasError) {
       await dispatch(addNewUser(newUser));
 
-      navigate("/");
+      navigate("/login");
     }
   };
   return (

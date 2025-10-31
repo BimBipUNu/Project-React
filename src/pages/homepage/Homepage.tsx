@@ -1,18 +1,22 @@
 import "./homepage.scss";
 import Navbar from "../../components/common/Navbar/Navbar";
-import banner from "../../assets/banner.png";
 import Footer from "../../components/common/footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../slices";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { fetchCourse } from "../../slices/course/course.slice";
 import { useNavigate } from "react-router-dom";
 
 export default function Homepage() {
   const userStore = useSelector((store: RootState) => store.user);
   const courseStore = useSelector((state: RootState) => state.course);
+  const ref = useRef<HTMLElement>(null);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+
+  const scrollToContent = () => {
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
     dispatch(fetchCourse());
@@ -27,12 +31,12 @@ export default function Homepage() {
         <div className="relative">
           <div>
             <img
-              src={banner}
+              src="https://res.cloudinary.com/dkzsbvp8p/image/upload/v1761912033/8d0c8507-f6ae-4daa-b75d-22534e5a1349_gfz5ii.png"
               alt="banner"
               className="xl:w-[1440px] md:w-[834px] w-[375px] h-[745px] object-fill flex justify-center"
             />
             <div className="xl:w-[576px] md:w-[576px] w-[375px] h-[156px] absolute top-[295px] xl:left-[425px] md:left-[112px] left-0 flex flex-col justify-center text-center">
-              <p className="font-bold text-[50px] text-white">
+              <p className="font-bold text-nowrap text-[50px] text-white">
                 {userStore.isLogin
                   ? `Welcome back, ${userStore.data.fullName}!`
                   : "Welcome to Our Gym"}
@@ -40,7 +44,10 @@ export default function Homepage() {
               <p className="text-white text-[30px]">
                 Transform Your Body, Transform Your Life
               </p>
-              <button className=" w-[194px] h-[44px] mx-auto mt-[25px] pt-[8px] pb-[8px] pl-[8px] pr-[8px] radius-[16px] rounded-[8px] bg-blue-500 text-white">
+              <button
+                className=" w-[194px] h-[44px] mx-auto mt-[25px] pt-[8px] pb-[8px] pl-[8px] pr-[8px] radius-[16px] rounded-[8px] bg-blue-500 text-white cursor-pointer"
+                onClick={scrollToContent}
+              >
                 Bắt đầu ngay
               </button>
             </div>
@@ -49,7 +56,10 @@ export default function Homepage() {
       </div>
 
       {/* Main content */}
-      <main className="flex-1 flex flex-col justify-center items-center">
+      <main
+        className="flex-1 flex flex-col justify-center items-center"
+        ref={ref}
+      >
         <p className="font-bold text-[28px] md:text-[32px] xl:text-[35px] text-center mt-[64px]">
           Các lớp học phổ biến
         </p>
@@ -75,7 +85,7 @@ export default function Homepage() {
                     {course.description}
                   </p>
                   <button
-                    className="bg-blue-500 hover:bg-blue-600 text-white w-[100px] h-[40px] rounded-[8px]"
+                    className="bg-blue-500 hover:bg-blue-600 text-white w-[100px] h-[40px] rounded-[8px] cursor-pointer"
                     onClick={() => {
                       navigate("booking");
                     }}

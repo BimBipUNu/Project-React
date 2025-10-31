@@ -5,7 +5,7 @@ async function addNewUser(data: User) {
   try {
     const response = await axios.post(
       `${import.meta.env.VITE_LOCALHOST_API}/users`,
-      data
+      { ...data, id: String(Date.now()) }
     );
     return response.data;
   } catch (error) {

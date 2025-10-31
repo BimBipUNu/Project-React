@@ -41,7 +41,9 @@ export default function Navbar() {
                   Xin chào, {userStore.data.fullName.toUpperCase()}
                 </span>
                 <button
-                  onClick={handleLogout}
+                  onClick={() => {
+                    handleLogout();
+                  }}
                   className="item text-white text-[16px] cursor-pointer hover:text-blue-300 transition"
                 >
                   Đăng xuất
